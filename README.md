@@ -6,3 +6,26 @@
 
 어드민 메인 페이지 표시
 
+### `GET /reservation`
+예약 페이지 표시
+
+### `GET /reservations`
+```http request
+HTTP/1.1 200
+Content-Type: application/json
+
+[
+    {
+        "id": 1,
+        "name": "브라운",
+        "date": "2023-01-01",
+        "time": "10:00"
+    },
+    {
+        "id": 2,
+        "name": "브라운",
+        "date": "2023-01-02",
+        "time": "11:00"
+    }
+]
+```
