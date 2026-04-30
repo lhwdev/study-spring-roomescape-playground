@@ -1,17 +1,21 @@
-package roomescape.domain;
+package roomescape.reservation.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public record Reservation(
-		Long id,
+		ReservationId id,
 		String name,
 		LocalDate date,
 		LocalTime time
 ) {
-	public static Reservation toEntity(Reservation reservation, long id) {
+	public static Reservation toEntity(Reservation reservation, ReservationId id) {
 		return new Reservation(id, reservation.name, reservation.date, reservation.time);
+	}
+	
+	public long getId() {
+		return id.id();
 	}
 	
 	public String getDate() {

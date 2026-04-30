@@ -1,9 +1,9 @@
-package roomescape.domain;
+package roomescape.reservation.domain;
 
 import java.util.*;
 
 public class ReservationList {
-	Map<Long, Reservation> reservations = new HashMap<>();
+	Map<ReservationId, Reservation> reservations = new HashMap<>();
 	
 	public Collection<Reservation> get() {
 		return reservations.values();
@@ -13,7 +13,7 @@ public class ReservationList {
 		reservations.put(reservation.id(), reservation);
 	}
 	
-	public void remove(long id) {
+	public void remove(ReservationId id) {
 		reservations.remove(id);
 	}
 }

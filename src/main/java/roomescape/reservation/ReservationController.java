@@ -1,10 +1,11 @@
-package roomescape.controller;
+package roomescape.reservation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import roomescape.domain.Reservation;
-import roomescape.domain.ReservationList;
+import roomescape.reservation.domain.Reservation;
+import roomescape.reservation.domain.ReservationId;
+import roomescape.reservation.domain.ReservationList;
 
 import java.net.URI;
 import java.util.Collection;
@@ -27,17 +28,18 @@ public class ReservationController {
 	
 	@PostMapping("/reservations")
 	public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-		Reservation newReservation = Reservation.toEntity(reservation, nextId.incrementAndGet());
+		Reservation newReservation = Reservation.toEntity(reservation, new ReservationId(nextId.incrementAndGet()));
 		reservationList.add(newReservation);
 		
 		return ResponseEntity
-				.created(URI.create("/reservations/" + newReservation.id()))
+				.created(URI.create("/reservations/" + newReservation.getId()))
 				.body(newReservation);
 	}
 	
 	@DeleteMapping("/reservations/{id}")
 	public ResponseEntity<Void> deleteReservation(@PathVariable long id) {
-		reservationList.remove(id);
+		ReservationId reservationId = new ReservationId(id);
+		reservationList.remove(reservationId);
 		
 		return ResponseEntity.noContent().build();
 	}
