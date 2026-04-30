@@ -2,16 +2,18 @@ package roomescape.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationList;
 
-import java.util.List;
+import java.net.URI;
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class ReservationController {
-	ReservationList reservationList = new ReservationList();
+	private final ReservationList reservationList = new ReservationList();
+	private final AtomicLong nextId = new AtomicLong(0);
 	
 	@GetMapping("/reservation")
 	public String reservationPage() {
@@ -19,7 +21,24 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/reservations")
-	public ResponseEntity<List<Reservation>> getReservations() {
-		return ResponseEntity.ok(reservationList.getReservations());
+	public ResponseEntity<Collection<Reservation>> getReservations() {
+		return ResponseEntity.ok(reservationList.get());
+	}
+	
+	@PostMapping("/reservations")
+	public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
+		Reservation newReservation = Reservation.toEntity(reservation, nextId.incrementAndGet());
+		reservationList.add(newReservation);
+		
+		return ResponseEntity
+				.created(URI.create("/reservations/" + newReservation.id()))
+				.body(newReservation);
+	}
+	
+	@DeleteMapping("/reservations/{id}")
+	public ResponseEntity<Void> deleteReservation(@PathVariable long id) {
+		reservationList.remove(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 }
