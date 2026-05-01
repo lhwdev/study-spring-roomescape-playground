@@ -1,7 +1,6 @@
 package roomescape.reservation;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationId;
@@ -11,15 +10,10 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
+@RestController
 public class ReservationController {
 	private final ReservationList reservationList = new ReservationList();
 	private final AtomicLong nextId = new AtomicLong(0);
-	
-	@GetMapping("/reservation")
-	public String reservationPage() {
-		return "reservation";
-	}
 	
 	@GetMapping("/reservations")
 	public ResponseEntity<Collection<Reservation>> getReservations() {
