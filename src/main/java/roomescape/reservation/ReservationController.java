@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
+@RequestMapping("/reservations")
 public class ReservationController {
 	private final ReservationTable reservationTable = new ReservationTable();
 	private final AtomicLong nextId = new AtomicLong(0);
 	
-	@GetMapping("/reservations")
+	@GetMapping
 	public ResponseEntity<List<ReservationDto>> getReservations() {
 		List<ReservationDto> reservations = reservationTable.getAll().stream()
 				.map(ReservationDto::new)
@@ -25,7 +26,7 @@ public class ReservationController {
 		return ResponseEntity.ok(reservations);
 	}
 	
-	@PostMapping("/reservations")
+	@PostMapping
 	public ResponseEntity<ReservationDto> createReservation(@RequestBody CreateReservationBody createReservationBody) {
 		ReservationId id = new ReservationId(nextId.incrementAndGet());
 		Reservation reservation = createReservationBody.createEntity(id);
@@ -36,7 +37,7 @@ public class ReservationController {
 				.body(new ReservationDto(reservation));
 	}
 	
-	@DeleteMapping("/reservations/{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity<Void> deleteReservation(@PathVariable long id) {
 		ReservationId reservationId = new ReservationId(id);
 		reservationTable.remove(reservationId);
