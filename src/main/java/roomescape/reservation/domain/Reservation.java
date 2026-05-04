@@ -2,12 +2,12 @@ package roomescape.reservation.domain;
 
 import java.time.LocalDateTime;
 
-public record Reservation(
-		ReservationId id,
-		String name,
-		LocalDateTime time
-) {
-	public Reservation {
+public final class Reservation {
+	private final ReservationId id;
+	private final String name;
+	private final LocalDateTime time;
+	
+	public Reservation(ReservationId id, String name, LocalDateTime time) {
 		// 다음 미션에서 예외 구현
 		if(name.length() > 128) {
 			name = name.substring(0, 128);
@@ -17,9 +17,20 @@ public record Reservation(
 		if(time.isBefore(now)) {
 			time = now;
 		}
+		this.id = id;
+		this.name = name;
+		this.time = time;
 	}
 	
-	public long getId() {
-		return id.id();
+	public ReservationId getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public LocalDateTime getTime() {
+		return time;
 	}
 }

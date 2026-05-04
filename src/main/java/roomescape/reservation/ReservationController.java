@@ -33,7 +33,7 @@ public class ReservationController {
 		reservations.add(reservation);
 		
 		return ResponseEntity
-				.created(URI.create("/reservations/" + reservation.getId()))
+				.created(URI.create("/reservations/" + id.id()))
 				.body(new ReservationDto(reservation));
 	}
 	

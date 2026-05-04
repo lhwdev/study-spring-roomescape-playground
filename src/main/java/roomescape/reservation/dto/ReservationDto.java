@@ -15,9 +15,9 @@ public class ReservationDto {
 	private final LocalDateTime time;
 	
 	public ReservationDto(Reservation reservation) {
-		this.id = reservation.id();
-		this.name = reservation.name();
-		this.time = reservation.time();
+		this.id = reservation.getId();
+		this.name = reservation.getName();
+		this.time = reservation.getTime();
 	}
 	
 	public long getId() {

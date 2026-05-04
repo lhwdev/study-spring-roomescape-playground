@@ -10,7 +10,7 @@ public class Reservations {
 	}
 	
 	public synchronized void add(Reservation reservation) {
-		reservations.put(reservation.id(), reservation);
+		reservations.put(reservation.getId(), reservation);
 	}
 	
 	public synchronized void remove(ReservationId id) {
