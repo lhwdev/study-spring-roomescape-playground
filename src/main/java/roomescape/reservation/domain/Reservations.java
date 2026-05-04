@@ -3,7 +3,7 @@ package roomescape.reservation.domain;
 import java.util.*;
 
 public class Reservations {
-	private final Map<ReservationId, Reservation> reservations = new LinkedHashMap<>();
+	private final Map<ReservationId, Reservation> reservations = new TreeMap<>();
 	
 	public synchronized List<Reservation> getAll() {
 		return new ArrayList<>(reservations.values());
