@@ -1,5 +1,6 @@
 package roomescape.reservation;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import roomescape.reservation.domain.Reservation;
@@ -19,11 +20,10 @@ public class ReservationController {
 	private final AtomicLong nextId = new AtomicLong(0);
 	
 	@GetMapping
-	public ResponseEntity<List<ReservationDto>> getReservations() {
-		List<ReservationDto> reservations = this.reservations.getAll().stream()
+	public List<ReservationDto> getReservations() {
+		return this.reservations.getAll().stream()
 				.map(ReservationDto::new)
 				.toList();
-		return ResponseEntity.ok(reservations);
 	}
 	
 	@PostMapping
@@ -38,10 +38,9 @@ public class ReservationController {
 	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<Void> deleteReservation(@PathVariable long id) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteReservation(@PathVariable long id) {
 		ReservationId reservationId = new ReservationId(id);
 		reservations.remove(reservationId);
-		
-		return ResponseEntity.noContent().build();
 	}
 }
