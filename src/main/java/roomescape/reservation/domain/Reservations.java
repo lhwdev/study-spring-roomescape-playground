@@ -1,11 +1,8 @@
-package roomescape.reservation.dto;
-
-import roomescape.reservation.domain.Reservation;
-import roomescape.reservation.domain.ReservationId;
+package roomescape.reservation.domain;
 
 import java.util.*;
 
-public class ReservationTable {
+public class Reservations {
 	private final Map<ReservationId, Reservation> reservations = new LinkedHashMap<>();
 	
 	public synchronized List<Reservation> getAll() {
