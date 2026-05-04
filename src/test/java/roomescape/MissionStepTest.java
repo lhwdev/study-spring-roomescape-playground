@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 public class MissionStepTest {
 
     @Test
-    void 페이지가_살아_숨쉰다() {
+    void 프론트_페이지에_접속_가능() {
         RestAssured.given().log().all()
                 .when().get("/")
                 .then().log().all()
@@ -31,7 +31,7 @@ public class MissionStepTest {
     }
     
     @Test
-    void REST_API_시나리오_테스트() {
+    void 예약_생성_삭제() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "브라운");
         params.put("date", LocalDate.now().plusDays(5).format(DateTimeFormatter.ISO_LOCAL_DATE));
