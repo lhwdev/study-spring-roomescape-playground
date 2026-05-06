@@ -9,14 +9,17 @@ import java.time.LocalTime;
 
 public record ReservationDto(
 		ReservationId id,
+		
 		String name,
+		
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 		LocalDate date,
+		
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 		LocalTime time
 ) {
-	public ReservationDto(Reservation reservation) {
-		this(
+	public static ReservationDto from(Reservation reservation) {
+		return new ReservationDto(
 				reservation.getId(),
 				reservation.getName(),
 				reservation.getTime().toLocalDate(),

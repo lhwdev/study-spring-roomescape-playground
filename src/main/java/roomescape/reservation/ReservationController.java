@@ -16,31 +16,26 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
-	private final Reservations reservations = new Reservations();
-	private final AtomicLong nextId = new AtomicLong(0);
+	private final ReservationService service = new ReservationService();
 	
 	@GetMapping
 	public List<ReservationDto> getReservations() {
-		return this.reservations.getAll().stream()
-				.map(ReservationDto::new)
-				.toList();
+		return service.getReservations();
 	}
 	
 	@PostMapping
 	public ResponseEntity<ReservationDto> createReservation(@RequestBody CreateReservationBody createReservationBody) {
-		ReservationId id = new ReservationId(nextId.incrementAndGet());
-		Reservation reservation = createReservationBody.createEntity(id);
-		reservations.add(reservation);
+		ReservationDto result = service.createReservation(createReservationBody);
 		
 		return ResponseEntity
-				.created(URI.create("/reservations/" + id.id()))
-				.body(new ReservationDto(reservation));
+				.created(URI.create("/reservations/" + result.id().id()))
+				.body(result);
 	}
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteReservation(@PathVariable long id) {
 		ReservationId reservationId = new ReservationId(id);
-		reservations.remove(reservationId);
+		service.deleteReservation(reservationId);
 	}
 }
