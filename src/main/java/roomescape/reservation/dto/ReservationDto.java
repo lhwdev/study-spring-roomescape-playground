@@ -1,38 +1,26 @@
 package roomescape.reservation.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationId;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-public class ReservationDto {
-	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("hh:mm");
-	
-	private final ReservationId id;
-	private final String name;
-	private final LocalDateTime time;
-	
+public record ReservationDto(
+		ReservationId id,
+		String name,
+		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+		LocalDate date,
+		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+		LocalTime time
+) {
 	public ReservationDto(Reservation reservation) {
-		this.id = reservation.getId();
-		this.name = reservation.getName();
-		this.time = reservation.getTime();
-	}
-	
-	public long getId() {
-		return id.id();
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getDate() {
-		return time.format(DATE_FORMAT);
-	}
-	
-	public String getTime() {
-		return time.format(TIME_FORMAT);
+		this(
+				reservation.getId(),
+				reservation.getName(),
+				reservation.getTime().toLocalDate(),
+				reservation.getTime().toLocalTime()
+		);
 	}
 }
