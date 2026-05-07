@@ -7,7 +7,7 @@ import roomescape.reservation.domain.ReservationId;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record ReservationDto(
+public record ReservationResponse(
 		ReservationId id,
 		
 		String name,
@@ -18,8 +18,8 @@ public record ReservationDto(
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 		LocalTime time
 ) {
-	public static ReservationDto from(Reservation reservation) {
-		return new ReservationDto(
+	public static ReservationResponse from(Reservation reservation) {
+		return new ReservationResponse(
 				reservation.getId(),
 				reservation.getName(),
 				reservation.getTime().toLocalDate(),

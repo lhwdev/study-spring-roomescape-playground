@@ -3,8 +3,8 @@ package roomescape.reservation;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationId;
 import roomescape.reservation.domain.Reservations;
-import roomescape.reservation.dto.CreateReservationBody;
-import roomescape.reservation.dto.ReservationDto;
+import roomescape.reservation.dto.CreateReservationRequest;
+import roomescape.reservation.dto.ReservationResponse;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -13,18 +13,18 @@ public class ReservationService {
 	private final Reservations reservations = new Reservations();
 	private final AtomicLong nextId = new AtomicLong(0);
 	
-	public List<ReservationDto> getReservations() {
+	public List<ReservationResponse> getReservations() {
 		return this.reservations.getAll().stream()
-				.map(ReservationDto::from)
+				.map(ReservationResponse::from)
 				.toList();
 	}
 	
-	public ReservationDto createReservation(CreateReservationBody createReservationBody) {
+	public ReservationResponse createReservation(CreateReservationRequest request) {
 		ReservationId id = new ReservationId(nextId.incrementAndGet());
-		Reservation reservation = createReservationBody.createEntity(id);
+		Reservation reservation = request.createEntity(id);
 		reservations.add(reservation);
 		
-		return ReservationDto.from(reservation);
+		return ReservationResponse.from(reservation);
 	}
 	
 	public void deleteReservation(ReservationId id) {

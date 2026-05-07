@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import roomescape.reservation.domain.ReservationId;
-import roomescape.reservation.dto.ReservationDto;
+import roomescape.reservation.dto.ReservationResponse;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.is;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReservationScenarioTest {
 	Map<String, String> createParams;
-	ReservationDto expected;
+	ReservationResponse expected;
 	
 	ReservationScenarioTest() {
 		createParams = new HashMap<>();
@@ -35,7 +35,7 @@ public class ReservationScenarioTest {
 		createParams.put("date", LocalDate.now().plusDays(5).format(DateTimeFormatter.ISO_LOCAL_DATE));
 		createParams.put("time", "15:40");
 		
-		expected = new ReservationDto(
+		expected = new ReservationResponse(
 				new ReservationId(1),
 				createParams.get("name"),
 				LocalDate.parse(createParams.get("date")),
@@ -48,14 +48,14 @@ public class ReservationScenarioTest {
 	@Test
 	@Order(1)
 	void 예약_생성() {
-		ReservationDto created = RestAssured.given()
+		ReservationResponse created = RestAssured.given()
 				.contentType(ContentType.JSON)
 				.body(createParams)
 				.when().post("/reservations")
 				.then()
 				.statusCode(201)
 				.header("Location", "/reservations/1")
-				.extract().as(ReservationDto.class);
+				.extract().as(ReservationResponse.class);
 		
 		assertThat(created).isEqualTo(expected);
 	}
@@ -63,11 +63,11 @@ public class ReservationScenarioTest {
 	@Test
 	@Order(2)
 	void 예약_조회() {
-		ReservationDto[] current = RestAssured.given()
+		ReservationResponse[] current = RestAssured.given()
 				.when().get("/reservations")
 				.then()
 				.statusCode(200)
-				.extract().as(ReservationDto[].class);
+				.extract().as(ReservationResponse[].class);
 		
 		assertThat(current)
 				.singleElement()
