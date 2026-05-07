@@ -33,13 +33,22 @@ public final class Reservation {
 		Objects.requireNonNull(name, "name이 null일 수 없습니다.");
 		Objects.requireNonNull(time, "time이 null일 수 없습니다.");
 		
-		if(name.length() > NAME_MAX_LENGTH) {
-			throw new IllegalArgumentException("name의 최대 길이를 초과했습니다. 최대 길이는 " + NAME_MAX_LENGTH + "입니다.");
-		}
+		checkName(name);
 		
 		this.id = id;
 		this.name = name;
 		this.time = time;
+	}
+	
+	private void checkName(String name) {
+		if(name.length() > NAME_MAX_LENGTH) {
+			throw new IllegalArgumentException("이름이 최대 길이를 초과했습니다. 최대 길이는 " + NAME_MAX_LENGTH + "입니다.");
+		}
+		
+		boolean isLetter = name.codePoints().allMatch(Character::isLetter);
+		if(!isLetter) {
+			throw new IllegalArgumentException("이름에는 숫자, 기호, 띄어쓰기 등을 제외한 글자만 입력할 수 있습니다.");
+		}
 	}
 	
 	public @NotNull ReservationId getId() {
