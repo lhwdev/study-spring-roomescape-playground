@@ -62,7 +62,7 @@ Content-Type: application/json
 
 **Response**
 ```http request
-HTTP 201 
+HTTP 201 Created
 Location: /reservations/1
 Content-Type: application/json
 
