@@ -1,6 +1,9 @@
 package roomescape.reservation;
 
+import roomescape.global.exception.ApiException;
+import roomescape.global.exception.InternalErrorException;
 import roomescape.reservation.domain.Reservation;
+import roomescape.reservation.domain.ReservationException;
 import roomescape.reservation.domain.ReservationId;
 import roomescape.reservation.domain.Reservations;
 import roomescape.reservation.dto.CreateReservationRequest;
@@ -19,10 +22,18 @@ public class ReservationService {
 				.toList();
 	}
 	
-	public ReservationResponse createReservation(CreateReservationRequest request) {
+	public ReservationResponse createReservation(CreateReservationRequest request) throws ApiException {
 		ReservationId id = new ReservationId(nextId.incrementAndGet());
 		Reservation reservation = request.createEntity(id);
-		reservations.add(reservation);
+		
+		try {
+			reservations.add(reservation);
+		} catch(ReservationException e) {
+			if(e instanceof ReservationException.DuplicateTime)
+				throw new ReservationDuplicateTimeException();
+			
+			throw new InternalErrorException(e);
+		}
 		
 		return ReservationResponse.from(reservation);
 	}

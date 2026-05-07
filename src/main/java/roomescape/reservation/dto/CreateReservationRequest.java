@@ -1,7 +1,5 @@
 package roomescape.reservation.dto;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import roomescape.reservation.domain.Reservation;
@@ -16,24 +14,13 @@ public record CreateReservationRequest(
 		@Length(max = Reservation.NAME_MAX_LENGTH)
 		String name,
 		
-		@Nullable
+		@NotNull
 		LocalDate date,
 		
-		@Nullable
+		@NotNull
 		LocalTime time
 ) {
-	@AssertTrue(message = "date와 time은 모두 null이거나 모두 값을 가져야 합니다.")
-	public boolean isValidDateTime() {
-		return (date == null) == (time == null);
-	}
-	
 	public Reservation createEntity(ReservationId id) {
-		if(!isValidDateTime()) throw new IllegalStateException();
-		
-		if(date == null) {
-			return Reservation.createNow(id, name);
-		} else {
-			return Reservation.create(id, name, LocalDateTime.of(date, time));
-		}
+		return new Reservation(id, name, LocalDateTime.of(date, time));
 	}
 }

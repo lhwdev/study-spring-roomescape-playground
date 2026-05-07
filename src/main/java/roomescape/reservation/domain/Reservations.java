@@ -9,7 +9,17 @@ public class Reservations {
 		return new ArrayList<>(reservations.values());
 	}
 	
-	public synchronized void add(Reservation reservation) {
+	public synchronized void add(Reservation reservation) throws ReservationException {
+		for(Reservation existing : reservations.values()) {
+			if(existing.getId().equals(reservation.getId())) {
+				throw new ReservationException.IdAlreadyExists();
+			}
+			
+			if(existing.getTime().equals(reservation.getTime())) {
+				throw new ReservationException.DuplicateTime();
+			}
+		}
+		
 		reservations.put(reservation.getId(), reservation);
 	}
 	
