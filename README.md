@@ -1,21 +1,53 @@
 # 방탈출 관리 애플리케이션
 
-## 공통
+# 기능 명세
 
-****
-
-## HTML 페이지 표시
+### HTML 페이지 표시
 
 - `GET /`
 - `GET /reservation`
 
-## `GET /reservations`
+### API 공통
+
+**입력을 파싱하지 못할 경우 응답**
+
+```http request
+HTTP 400
+Content-Type: application/json
+
+{
+    "type": "InvalidFormatException",
+    "message": "JSON 파싱에 실패했습니다.",
+    "field": "time"
+}
+```
+
+**입력 형식이 잘못될 경우 응답**
+
+```http request
+HTTP 400
+Content-Type: application/json
+
+{
+    "type": "MalformedInput",
+    "message": "입력 형식이 잘못되었습니다.",
+    "fields": [
+        {
+            "field": "name",
+            "type": "Length",
+            "message": "길이가 0에서 6 사이여야 합니다."
+        }
+    ]
+}
+```
+
+### `GET /reservations`
 
 전체 예약 목록을 반환합니다.
 
 > `() -> ReservationDto[]`
 
-**Response**
+**정상 응답**
 ```http request
 HTTP 200
 Content-Type: application/json
@@ -36,19 +68,16 @@ Content-Type: application/json
 ]
 ```
 
-## `POST /reservations`
+### `POST /reservations`
 
 새로운 예약을 추가합니다.
 
 > `(body: CreateReservationBody) -> ReservationDto`
 
-- 지정되는 시간은 과거일 수 없습니다.
+- 이름은 한글, 영어 등의 문자만 가능합니다. (Unicode Letter Category)
+- 기존 예약과 중복되는 시간에 예약할 수 없습니다.
 
-### 추후 예약 추가
-
-- 현재로부터 대략 1분 이내에는 예약을 추가할 수 없습니다. 대신 [지금 예약 추가](#지금-예약-추가)를 참고해주세요.
-
-**Request**
+**정상 요청**
 ```http request
 POST /reservations
 Content-Type: application/json
@@ -60,7 +89,7 @@ Content-Type: application/json
 }
 ```
 
-**Response**
+**정상 응답**
 ```http request
 HTTP 201 Created
 Location: /reservations/1
@@ -74,39 +103,24 @@ Content-Type: application/json
 }
 ```
 
-### 지금 예약 추가
-
-**Request**
+**해당 시간에 중복되는 예약이 있을 경우 응답**
 ```http request
-POST /reservations
+HTTP 400 
 Content-Type: application/json
 
 {
-    "name": "브라운"
+  "type": "Reservation.DuplicateTime",
+  "message": "해당 예약 시간에 이미 다른 예약이 있습니다."
 }
 ```
 
-**Response**
-```http request
-HTTP 201 
-Location: /reservations/1
-Content-Type: application/json
-
-{
-    "id": 1,
-    "name": "브라운",
-    "date": "2026-05-07", // 현재 날짜
-    "time": "10:59" // 현재 시간
-}
-```
-
-## `DELETE /reservations/{id}`
+### `DELETE /reservations/{id}`
 
 해당 id를 가진 예약을 삭제합니다.
 
 > `(pathId: ReservationId) -> void`
 
-**Response**
+**정상 응답**
 ```http request
 HTTP 204 No Content
 ```
