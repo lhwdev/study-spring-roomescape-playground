@@ -48,9 +48,8 @@ public class ReservationScenarioTest {
 	@Test
 	@Order(1)
 	void 예약_생성() {
-		ReservationResponse created = RestAssured.given()
-				.contentType(ContentType.JSON)
-				.body(createParams)
+		ReservationResponse created = RestAssured
+				.given().contentType(ContentType.JSON).body(createParams)
 				.when().post("/reservations")
 				.then()
 				.statusCode(201)
@@ -62,6 +61,14 @@ public class ReservationScenarioTest {
 	
 	@Test
 	@Order(2)
+	void 예약_중복_추가_불가능() {
+		RestAssured.given().contentType(ContentType.JSON).body(createParams)
+				.when().post("/reservations")
+				.then().statusCode(400);
+	}
+	
+	@Test
+	@Order(3)
 	void 예약_조회() {
 		ReservationResponse[] current = RestAssured.given()
 				.when().get("/reservations")
@@ -75,7 +82,7 @@ public class ReservationScenarioTest {
 	}
 	
 	@Test
-	@Order(3)
+	@Order(4)
 	void 예약_삭제() {
 		RestAssured.given()
 				.when().delete("/reservations/1")
@@ -87,5 +94,13 @@ public class ReservationScenarioTest {
 				.then()
 				.statusCode(200)
 				.body("size()", is(0));
+	}
+	
+	@Test
+	@Order(5)
+	void 존재하지_않는_예약_삭제_불가능() {
+		RestAssured.given()
+				.when().delete("/reservations/1")
+				.then().statusCode(404);
 	}
 }
