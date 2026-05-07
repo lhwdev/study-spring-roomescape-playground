@@ -36,7 +36,7 @@ public class ReservationController {
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteReservation(@PathVariable long id) {
+	public void deleteReservation(@PathVariable long id) throws ApiException {
 		ReservationId reservationId = new ReservationId(id);
 		service.deleteReservation(reservationId);
 	}

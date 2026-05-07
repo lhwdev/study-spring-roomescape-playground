@@ -38,7 +38,14 @@ public class ReservationService {
 		return ReservationResponse.from(reservation);
 	}
 	
-	public void deleteReservation(ReservationId id) {
-		reservations.remove(id);
+	public void deleteReservation(ReservationId id) throws ApiException {
+		try {
+			reservations.remove(id);
+		} catch(ReservationException e) {
+			if(e instanceof ReservationException.DoesNotExist)
+				throw new ReservationDoesNotExistException();
+			
+			throw new InternalErrorException(e);
+		}
 	}
 }

@@ -11,9 +11,17 @@ public class ReservationException extends Exception {
 		}
 	}
 	
+	
 	public static class DuplicateTime extends ReservationException {
 		public DuplicateTime() {
 			super("해당 시간에 다른 예약이 이미 존재합니다.");
+		}
+	}
+	
+	
+	public static class DoesNotExist extends ReservationException {
+		public DoesNotExist() {
+			super("해당 예약이 존재하지 않습니다.");
 		}
 	}
 }

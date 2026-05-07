@@ -23,7 +23,11 @@ public class Reservations {
 		reservations.put(reservation.getId(), reservation);
 	}
 	
-	public synchronized void remove(ReservationId id) {
+	public synchronized void remove(ReservationId id) throws ReservationException {
+		if(!reservations.containsKey(id)) {
+			throw new ReservationException.DoesNotExist();
+		}
+		
 		reservations.remove(id);
 	}
 }
