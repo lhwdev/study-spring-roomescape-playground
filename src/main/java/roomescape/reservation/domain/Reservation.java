@@ -9,26 +9,11 @@ import java.util.Objects;
 public final class Reservation {
 	public static final int NAME_MAX_LENGTH = 6;
 	
-	public static Reservation create(@Nonnull ReservationId id, @Nonnull String name, @Nonnull LocalDateTime time) {
-		LocalDateTime now = LocalDateTime.now();
-		if(time.isBefore(now)) {
-			throw new IllegalArgumentException("과거에 예약을 추가할 수 없습니다.");
-		}
-		
-		return new Reservation(id, name, time);
-	}
-	
-	public static Reservation createNow(@Nonnull ReservationId id, @Nonnull String name) {
-		LocalDateTime now = LocalDateTime.now();
-		return new Reservation(id, name, now);
-	}
-	
-	
 	private final ReservationId id;
 	private final String name;
 	private final LocalDateTime time;
 	
-	private Reservation(ReservationId id, String name, LocalDateTime time) {
+	public Reservation(@Nonnull ReservationId id, @Nonnull String name, @Nonnull LocalDateTime time) {
 		Objects.requireNonNull(id, "id가 null일 수 없습니다.");
 		Objects.requireNonNull(name, "name이 null일 수 없습니다.");
 		Objects.requireNonNull(time, "time이 null일 수 없습니다.");
