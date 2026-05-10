@@ -1,5 +1,6 @@
 package roomescape.reservation;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import roomescape.global.exception.ApiException;
 
@@ -10,7 +11,7 @@ public class ReservationDuplicateTimeException extends ApiException {
 	
 	@Override
 	public ResponseEntity<? extends Dto> getResponse() {
-		return ResponseEntity.badRequest().body(new Dto());
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(new Dto());
 	}
 	
 	
