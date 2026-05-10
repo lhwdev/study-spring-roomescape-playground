@@ -18,7 +18,13 @@ Content-Type: application/json
 {
     "type": "InvalidFormatException",
     "message": "JSON 파싱에 실패했습니다.",
-    "field": "time"
+    "fields": [
+        {
+            "field": "time",
+            "type": "InvalidFormatException", // 해당 예외 이름
+            "message": "line: 4, column: 11에서 오류가 발생했습니다."
+        }
+    ]
 }
 ```
 

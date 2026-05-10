@@ -39,15 +39,18 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<?> handleMalformedInput(HttpMessageNotReadableException exception) {
+	public ResponseEntity<ApiInputErrorResult> handleMalformedInput(HttpMessageNotReadableException exception) {
 		Throwable cause = exception.getCause();
 		if(cause instanceof JsonMappingException jsonException) {
 			String field = jsonException.getPath().stream()
 					.map(JsonMappingException.Reference::getFieldName)
 					.collect(Collectors.joining("."));
 			
+			ApiFieldError fieldError = new ApiFieldError(field, jsonException.getClass().getSimpleName(),
+					jsonException.getLocation().offsetDescription() + "에서 오류가 발생했습니다.");
+			
 			return ResponseEntity.badRequest()
-					.body(new ApiFieldError(field, jsonException.getClass().getSimpleName(), "JSON 파싱에 실패했습니다."));
+					.body(new ApiInputErrorResult("MalformedInput", "JSON 파싱에 실패했습니다.", List.of(fieldError)));
 		}
 		
 		return ResponseEntity.badRequest()
