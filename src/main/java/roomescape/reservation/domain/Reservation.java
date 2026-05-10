@@ -14,7 +14,7 @@ public final class Reservation {
 	private final LocalDateTime time;
 	
 	public Reservation(@Nonnull ReservationId id, @Nonnull String name,
-					   @Nonnull LocalDateTime time) throws ReservationException {
+					   @Nonnull LocalDateTime time) throws ReservationException.InputFormat {
 		Objects.requireNonNull(id, "id가 null일 수 없습니다.");
 		Objects.requireNonNull(name, "name이 null일 수 없습니다.");
 		Objects.requireNonNull(time, "time이 null일 수 없습니다.");
@@ -26,14 +26,14 @@ public final class Reservation {
 		this.time = time;
 	}
 	
-	private void checkName(String name) throws ReservationException {
+	private void checkName(String name) throws ReservationException.InputFormat {
 		if(name.length() > NAME_MAX_LENGTH) {
-			throw new ReservationException.NameTooLong(NAME_MAX_LENGTH);
+			throw new ReservationException.InputFormat.NameTooLong(NAME_MAX_LENGTH);
 		}
 		
 		boolean isLetter = name.codePoints().allMatch(Character::isLetter);
 		if(!isLetter) {
-			throw new ReservationException.IllegalName();
+			throw new ReservationException.InputFormat.IllegalName();
 		}
 	}
 	

@@ -21,7 +21,7 @@ public record CreateReservationRequest(
 		@NotNull
 		LocalTime time
 ) {
-	public Reservation createEntity(ReservationId id) throws ReservationException {
+	public Reservation createEntity(ReservationId id) throws ReservationException.InputFormat {
 		return new Reservation(id, name, LocalDateTime.of(date, time));
 	}
 }

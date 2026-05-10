@@ -28,13 +28,8 @@ public class ReservationService {
 		
 		try {
 			reservation = request.createEntity(id);
-		} catch(ReservationException e) {
-			if(e instanceof ReservationException.NameTooLong)
-				throw new ReservationInputFormatException("name", e.getMessage());
-			if(e instanceof ReservationException.IllegalName)
-				throw new ReservationInputFormatException("name", e.getMessage());
-			
-			throw new InternalErrorException(e);
+		} catch(ReservationException.InputFormat e) {
+			throw new ReservationInputFormatException(e.getField(), e.getMessage());
 		}
 		
 		try {
