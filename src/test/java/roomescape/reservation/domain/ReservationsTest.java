@@ -24,7 +24,7 @@ public class ReservationsTest {
 	}
 	
 	@Test
-	void 예약을_추가_조회할_수_있다() {
+	void 예약을_추가한_후_조회할_수_있다() {
 		Reservations reservations = new Reservations();
 		assertThatCode(() -> {
 			reservations.add(dummy);
