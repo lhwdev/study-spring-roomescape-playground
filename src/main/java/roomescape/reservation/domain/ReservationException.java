@@ -5,6 +5,21 @@ public class ReservationException extends Exception {
 		super(message);
 	}
 	
+	
+	public static class NameTooLong extends ReservationException {
+		public NameTooLong(int maxLength) {
+			super("예약자 이름이 최대 길이를 초과했습니다. 최대 " + maxLength + "자여야 합니다.");
+		}
+	}
+	
+	
+	public static class IllegalName extends ReservationException {
+		public IllegalName() {
+			super("이름에는 숫자, 기호, 띄어쓰기 등을 제외한 글자만 입력할 수 있습니다.");
+		}
+	}
+	
+	
 	public static class IdAlreadyExists extends ReservationException {
 		public IdAlreadyExists() {
 			super("이미 존재하는 예약번호입니다.");

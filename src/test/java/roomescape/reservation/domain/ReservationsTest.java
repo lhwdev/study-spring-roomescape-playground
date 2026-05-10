@@ -20,6 +20,9 @@ public class ReservationsTest {
 			LocalDateTime.of(2026, 8, 2, 22, 13)
 	);
 	
+	public ReservationsTest() throws ReservationException {
+	}
+	
 	@Test
 	void 예약을_추가_조회할_수_있다() {
 		Reservations reservations = new Reservations();

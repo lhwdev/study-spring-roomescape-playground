@@ -24,7 +24,18 @@ public class ReservationService {
 	
 	public ReservationResponse createReservation(CreateReservationRequest request) throws ApiException {
 		ReservationId id = new ReservationId(nextId.incrementAndGet());
-		Reservation reservation = request.createEntity(id);
+		Reservation reservation;
+		
+		try {
+			reservation = request.createEntity(id);
+		} catch(ReservationException e) {
+			if(e instanceof ReservationException.NameTooLong)
+				throw new ReservationInputFormatException("name", e.getMessage());
+			if(e instanceof ReservationException.IllegalName)
+				throw new ReservationInputFormatException("name", e.getMessage());
+			
+			throw new InternalErrorException(e);
+		}
 		
 		try {
 			reservations.add(reservation);
