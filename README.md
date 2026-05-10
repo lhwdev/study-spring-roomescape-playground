@@ -47,6 +47,20 @@ Content-Type: application/json
 }
 ```
 
+**내부적인 오류가 발생할 경우 응답**
+
+```http request
+HTTP 500
+Content-Type: application/json
+
+{
+    "type": "InternalError",
+    "message": "내부 오류가 발생했습니다. 개발자에게 문의해주세요.",
+    "errorCode": "2026-05-10:kF8M:8a"
+}
+```
+이 경우, 백엔드 서버 로그에서 해당 오류코드를 검색하면 상세한 오류 로그를 확인할 수 있습니다.
+
 ### `GET /reservations`
 
 전체 예약 목록을 반환합니다.

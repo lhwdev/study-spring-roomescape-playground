@@ -3,8 +3,16 @@ package roomescape.global.exception;
 import org.springframework.http.ResponseEntity;
 
 public abstract class ApiException extends Exception {
+	public ApiException() {
+		super();
+	}
+	
 	public ApiException(String message) {
 		super(message);
+	}
+	
+	public ApiException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	public abstract ResponseEntity<? extends Dto> getResponse();
