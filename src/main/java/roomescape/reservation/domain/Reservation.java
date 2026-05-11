@@ -1,25 +1,51 @@
 package roomescape.reservation.domain;
 
-import java.time.LocalDateTime;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
-public record Reservation(
-		ReservationId id,
-		String name,
-		LocalDateTime time
-) {
-	public Reservation {
-		// 다음 미션에서 예외 구현
-		if(name.length() > 128) {
-			name = name.substring(0, 128);
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public final class Reservation {
+	public static final int NAME_MAX_LENGTH = 6;
+	
+	private final ReservationId id;
+	private final String name;
+	private final LocalDateTime time;
+	
+	public Reservation(@Nonnull ReservationId id, @Nonnull String name,
+					   @Nonnull LocalDateTime time) throws ReservationException.InputFormat {
+		Objects.requireNonNull(id, "id가 null일 수 없습니다.");
+		Objects.requireNonNull(name, "name이 null일 수 없습니다.");
+		Objects.requireNonNull(time, "time이 null일 수 없습니다.");
+		
+		checkName(name);
+		
+		this.id = id;
+		this.name = name;
+		this.time = time;
+	}
+	
+	private void checkName(String name) throws ReservationException.InputFormat {
+		if(name.length() > NAME_MAX_LENGTH) {
+			throw new ReservationException.InputFormat.NameTooLong(NAME_MAX_LENGTH);
 		}
 		
-		LocalDateTime now = LocalDateTime.now();
-		if(time.isBefore(now)) {
-			time = now;
+		boolean isLetter = name.codePoints().allMatch(Character::isLetter);
+		if(!isLetter) {
+			throw new ReservationException.InputFormat.IllegalName();
 		}
 	}
 	
-	public long getId() {
-		return id.id();
+	public @NotNull ReservationId getId() {
+		return id;
+	}
+	
+	public @NotNull String getName() {
+		return name;
+	}
+	
+	public @NotNull LocalDateTime getTime() {
+		return time;
 	}
 }

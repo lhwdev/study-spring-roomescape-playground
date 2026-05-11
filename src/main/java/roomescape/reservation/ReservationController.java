@@ -1,46 +1,43 @@
 package roomescape.reservation;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import roomescape.reservation.domain.Reservation;
+import roomescape.global.exception.ApiException;
 import roomescape.reservation.domain.ReservationId;
-import roomescape.reservation.dto.CreateReservationBody;
-import roomescape.reservation.dto.ReservationDto;
-import roomescape.reservation.domain.Reservations;
+import roomescape.reservation.dto.CreateReservationRequest;
+import roomescape.reservation.dto.ReservationResponse;
 
 import java.net.URI;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/reservations")
+@Validated
 public class ReservationController {
-	private final Reservations reservations = new Reservations();
-	private final AtomicLong nextId = new AtomicLong(0);
+	private final ReservationService service = new ReservationService();
 	
 	@GetMapping
-	public List<ReservationDto> getReservations() {
-		return this.reservations.getAll().stream()
-				.map(ReservationDto::new)
-				.toList();
+	public List<ReservationResponse> getReservations() {
+		return service.getReservations();
 	}
 	
 	@PostMapping
-	public ResponseEntity<ReservationDto> createReservation(@RequestBody CreateReservationBody createReservationBody) {
-		ReservationId id = new ReservationId(nextId.incrementAndGet());
-		Reservation reservation = createReservationBody.createEntity(id);
-		reservations.add(reservation);
+	public ResponseEntity<ReservationResponse> createReservation(
+			@RequestBody @Valid CreateReservationRequest body) throws ApiException {
+		ReservationResponse result = service.createReservation(body);
 		
 		return ResponseEntity
-				.created(URI.create("/reservations/" + reservation.getId()))
-				.body(new ReservationDto(reservation));
+				.created(URI.create("/reservations/" + result.id().id()))
+				.body(result);
 	}
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteReservation(@PathVariable long id) {
+	public void deleteReservation(@PathVariable long id) throws ApiException {
 		ReservationId reservationId = new ReservationId(id);
-		reservations.remove(reservationId);
+		service.deleteReservation(reservationId);
 	}
 }
