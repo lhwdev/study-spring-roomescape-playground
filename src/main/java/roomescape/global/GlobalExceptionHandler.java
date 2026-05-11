@@ -53,8 +53,7 @@ public class GlobalExceptionHandler {
 					.body(new ApiInputErrorResult("MalformedInput", "JSON 파싱에 실패했습니다.", List.of(fieldError)));
 		}
 		
-		return ResponseEntity.badRequest()
-				.body(new ApiInputErrorResult(exception.getClass().getSimpleName(), exception.getMessage(), null));
+		throw exception;
 	}
 	
 	@ExceptionHandler
