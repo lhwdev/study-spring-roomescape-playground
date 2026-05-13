@@ -17,17 +17,14 @@ public class RoomescapeApplication implements CommandLineRunner {
         SpringApplication.run(RoomescapeApplication.class, args);
     }
 
-    
-    @Autowired
+
+    @Autowired(required = false)
     private DatabaseInitialization databaseInitialization;
-    
+
     @Override
     public void run(String... args) {
-        databaseInitialization.initializeTables();
-    }
-    
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    public Server h2TcpServer() throws SQLException {
-        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "8082");
+        if(databaseInitialization != null) {
+            databaseInitialization.initializeTables();
+        }
     }
 }

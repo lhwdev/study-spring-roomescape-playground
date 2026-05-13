@@ -16,7 +16,11 @@ import java.util.List;
 @RequestMapping("/reservations")
 @Validated
 public class ReservationController {
-	private final ReservationService service = new ReservationService();
+	private final ReservationService service;
+	
+	public ReservationController(ReservationService service) {
+		this.service = service;
+	}
 	
 	@GetMapping
 	public List<ReservationResponse> getReservations() {

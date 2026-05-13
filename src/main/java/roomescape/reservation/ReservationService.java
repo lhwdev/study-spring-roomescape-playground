@@ -1,20 +1,21 @@
 package roomescape.reservation;
 
 import jakarta.annotation.Nonnull;
+import org.springframework.stereotype.Service;
 import roomescape.global.controller.InternalErrorException;
-import roomescape.reservation.domain.Reservation;
-import roomescape.reservation.domain.ReservationException;
-import roomescape.reservation.domain.ReservationId;
-import roomescape.reservation.domain.Reservations;
+import roomescape.reservation.domain.*;
 import roomescape.reservation.dto.CreateReservationRequest;
 import roomescape.reservation.dto.ReservationResponse;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+@Service
 public class ReservationService {
-	private final Reservations reservations = new Reservations();
-	private final AtomicLong nextId = new AtomicLong(0);
+	private final Reservations reservations;
+	
+	public ReservationService(Reservations reservations) {
+		this.reservations = reservations;
+	}
 	
 	public List<ReservationResponse> getReservations() {
 		return this.reservations.getAll().stream()
@@ -23,25 +24,23 @@ public class ReservationService {
 	}
 	
 	public ReservationResponse createReservation(@Nonnull CreateReservationRequest request) {
-		ReservationId id = new ReservationId(nextId.incrementAndGet());
-		Reservation reservation;
+		CreateReservationInfo info;
 		
 		try {
-			reservation = request.createEntity(id);
+			info = request.convertToDomain();
 		} catch(ReservationException.InputFormat e) {
 			throw new ReservationInputFormatException(e.getField(), e.getMessage());
 		}
 		
 		try {
-			reservations.add(reservation);
+			Reservation reservation = reservations.create(info);
+			return ReservationResponse.from(reservation);
 		} catch(ReservationException e) {
 			if(e instanceof ReservationException.DuplicateTime)
 				throw new ReservationDuplicateTimeException();
 			
 			throw new InternalErrorException(e);
 		}
-		
-		return ReservationResponse.from(reservation);
 	}
 	
 	public void deleteReservation(@Nonnull ReservationId id) {

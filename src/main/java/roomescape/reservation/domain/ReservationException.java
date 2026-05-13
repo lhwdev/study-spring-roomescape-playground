@@ -1,6 +1,8 @@
 package roomescape.reservation.domain;
 
-public class ReservationException extends Exception {
+import roomescape.global.domain.DomainException;
+
+public abstract class ReservationException extends DomainException {
 	public ReservationException(String message) {
 		super(message);
 	}
@@ -33,12 +35,6 @@ public class ReservationException extends Exception {
 		}
 	}
 	
-	
-	public static class IdAlreadyExists extends ReservationException {
-		public IdAlreadyExists() {
-			super("이미 존재하는 예약번호입니다.");
-		}
-	}
 	
 	
 	public static class DuplicateTime extends ReservationException {
