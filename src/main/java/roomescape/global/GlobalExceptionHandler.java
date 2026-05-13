@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler
-	public void handleApiInputError(DomainException exception) throws InternalErrorException {
-		throw new InternalErrorException(exception);
+	public void handleUncaughtError(Throwable throwable) throws InternalErrorException {
+		throw new InternalErrorException(throwable);
 	}
 }

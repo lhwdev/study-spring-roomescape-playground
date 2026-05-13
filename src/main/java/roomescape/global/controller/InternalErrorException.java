@@ -6,7 +6,7 @@ import roomescape.global.GlobalErrors;
 public class InternalErrorException extends ApiException implements ExceptionWithErrorCode {
 	private final String errorCode;
 	
-	public InternalErrorException(Exception cause) {
+	public InternalErrorException(Throwable cause) {
 		super(null, cause);
 		errorCode = GlobalErrors.generateErrorCode();
 	}
