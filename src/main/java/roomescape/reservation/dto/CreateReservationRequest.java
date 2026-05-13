@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record CreateReservationRequest(
-		@NotNull
-		@Length(max = CreateReservationInfo.NAME_MAX_LENGTH)
-		String name,
-		
-		@NotNull
-		LocalDate date,
-		
-		@NotNull
-		LocalTime time
+        @NotNull
+        @Length(max = CreateReservationInfo.NAME_MAX_LENGTH)
+        String name,
+
+        @NotNull
+        LocalDate date,
+
+        @NotNull
+        LocalTime time
 ) {
-	public CreateReservationInfo convertToDomain() {
-		return new CreateReservationInfo(name, LocalDateTime.of(date, time));
-	}
+    public CreateReservationInfo convertToDomain() {
+        return new CreateReservationInfo(name, LocalDateTime.of(date, time));
+    }
 }

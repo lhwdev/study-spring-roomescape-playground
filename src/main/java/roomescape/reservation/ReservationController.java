@@ -16,31 +16,31 @@ import java.util.List;
 @RequestMapping("/reservations")
 @Validated
 public class ReservationController {
-	private final ReservationService service;
-	
-	public ReservationController(ReservationService service) {
-		this.service = service;
-	}
-	
-	@GetMapping
-	public List<ReservationResponse> getReservations() {
-		return service.getReservations();
-	}
-	
-	@PostMapping
-	public ResponseEntity<ReservationResponse> createReservation(
-			@RequestBody @Valid CreateReservationRequest body) {
-		ReservationResponse result = service.createReservation(body);
-		
-		return ResponseEntity
-				.created(URI.create("/reservations/" + result.id().id()))
-				.body(result);
-	}
-	
-	@DeleteMapping("{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteReservation(@PathVariable long id) {
-		ReservationId reservationId = new ReservationId(id);
-		service.deleteReservation(reservationId);
-	}
+    private final ReservationService service;
+
+    public ReservationController(ReservationService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<ReservationResponse> getReservations() {
+        return service.getReservations();
+    }
+
+    @PostMapping
+    public ResponseEntity<ReservationResponse> createReservation(
+            @RequestBody @Valid CreateReservationRequest body) {
+        ReservationResponse result = service.createReservation(body);
+
+        return ResponseEntity
+                .created(URI.create("/reservations/" + result.id().id()))
+                .body(result);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReservation(@PathVariable long id) {
+        ReservationId reservationId = new ReservationId(id);
+        service.deleteReservation(reservationId);
+    }
 }
