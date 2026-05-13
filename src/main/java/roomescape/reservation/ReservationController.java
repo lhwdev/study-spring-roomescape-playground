@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import roomescape.global.exception.ApiException;
 import roomescape.reservation.domain.ReservationId;
 import roomescape.reservation.dto.CreateReservationRequest;
 import roomescape.reservation.dto.ReservationResponse;
@@ -26,7 +25,7 @@ public class ReservationController {
 	
 	@PostMapping
 	public ResponseEntity<ReservationResponse> createReservation(
-			@RequestBody @Valid CreateReservationRequest body) throws ApiException {
+			@RequestBody @Valid CreateReservationRequest body) {
 		ReservationResponse result = service.createReservation(body);
 		
 		return ResponseEntity
@@ -36,7 +35,7 @@ public class ReservationController {
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteReservation(@PathVariable long id) throws ApiException {
+	public void deleteReservation(@PathVariable long id) {
 		ReservationId reservationId = new ReservationId(id);
 		service.deleteReservation(reservationId);
 	}

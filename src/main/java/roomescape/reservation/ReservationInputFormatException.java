@@ -1,7 +1,7 @@
 package roomescape.reservation;
 
 import org.springframework.http.ResponseEntity;
-import roomescape.global.exception.ApiException;
+import roomescape.global.controller.ApiException;
 
 public class ReservationInputFormatException extends ApiException {
 	private final String field;

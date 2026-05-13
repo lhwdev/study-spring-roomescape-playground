@@ -7,9 +7,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import roomescape.global.controller.ApiException;
+import roomescape.global.controller.InternalErrorException;
+import roomescape.global.domain.DomainException;
 import roomescape.global.dto.ApiFieldError;
 import roomescape.global.dto.ApiInputErrorResult;
-import roomescape.global.exception.ApiException;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,5 +61,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<? extends ApiException.Dto> handleApiException(ApiException exception) {
 		return exception.getResponse();
+	}
+	
+	@ExceptionHandler
+	public void handleApiInputError(DomainException exception) throws InternalErrorException {
+		throw new InternalErrorException(exception);
 	}
 }

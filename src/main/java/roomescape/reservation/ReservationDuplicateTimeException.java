@@ -2,7 +2,7 @@ package roomescape.reservation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import roomescape.global.exception.ApiException;
+import roomescape.global.controller.ApiException;
 
 public class ReservationDuplicateTimeException extends ApiException {
 	public ReservationDuplicateTimeException() {

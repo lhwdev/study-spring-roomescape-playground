@@ -1,8 +1,7 @@
 package roomescape.reservation;
 
 import jakarta.annotation.Nonnull;
-import roomescape.global.exception.ApiException;
-import roomescape.global.exception.InternalErrorException;
+import roomescape.global.controller.InternalErrorException;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationException;
 import roomescape.reservation.domain.ReservationId;
@@ -23,7 +22,7 @@ public class ReservationService {
 				.toList();
 	}
 	
-	public ReservationResponse createReservation(@Nonnull CreateReservationRequest request) throws ApiException {
+	public ReservationResponse createReservation(@Nonnull CreateReservationRequest request) {
 		ReservationId id = new ReservationId(nextId.incrementAndGet());
 		Reservation reservation;
 		
@@ -45,9 +44,9 @@ public class ReservationService {
 		return ReservationResponse.from(reservation);
 	}
 	
-	public void deleteReservation(@Nonnull ReservationId id) throws ApiException {
+	public void deleteReservation(@Nonnull ReservationId id) {
 		try {
-			reservations.remove(id);
+			reservations.delete(id);
 		} catch(ReservationException e) {
 			if(e instanceof ReservationException.DoesNotExist)
 				throw new ReservationDoesNotExistException();

@@ -1,8 +1,8 @@
-package roomescape.global.exception;
+package roomescape.global.controller;
 
 import org.springframework.http.ResponseEntity;
 
-public abstract class ApiException extends Exception {
+public abstract class ApiException extends RuntimeException {
 	public ApiException() {
 		super();
 	}

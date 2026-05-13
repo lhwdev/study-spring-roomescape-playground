@@ -1,4 +1,4 @@
-package roomescape.global.exception;
+package roomescape.global.controller;
 
 public interface ExceptionWithErrorCode {
 	String getMessage();

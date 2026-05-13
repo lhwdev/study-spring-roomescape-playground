@@ -59,6 +59,7 @@ Content-Type: application/json
     "errorCode": "2026-05-10:kF8M:8a"
 }
 ```
+
 이 경우, 백엔드 서버 로그에서 해당 오류코드를 검색하면 상세한 오류 로그를 확인할 수 있습니다.
 
 ### `GET /reservations`
@@ -68,6 +69,7 @@ Content-Type: application/json
 > `() -> ReservationDto[]`
 
 **정상 응답**
+
 ```http request
 HTTP 200
 Content-Type: application/json
@@ -98,6 +100,7 @@ Content-Type: application/json
 - 기존 예약과 중복되는 시간에 예약할 수 없습니다.
 
 **정상 요청**
+
 ```http request
 POST /reservations
 Content-Type: application/json
@@ -110,6 +113,7 @@ Content-Type: application/json
 ```
 
 **정상 응답**
+
 ```http request
 HTTP 201 Created
 Location: /reservations/1
@@ -124,6 +128,7 @@ Content-Type: application/json
 ```
 
 **해당 시간에 중복되는 예약이 있을 경우 응답**
+
 ```http request
 HTTP 400 
 Content-Type: application/json
@@ -141,6 +146,7 @@ Content-Type: application/json
 > `(pathId: ReservationId) -> void`
 
 **정상 응답**
+
 ```http request
 HTTP 204 No Content
 ```

@@ -1,4 +1,4 @@
-package roomescape.global.exception;
+package roomescape.global.controller;
 
 import org.springframework.http.ResponseEntity;
 import roomescape.global.GlobalErrors;

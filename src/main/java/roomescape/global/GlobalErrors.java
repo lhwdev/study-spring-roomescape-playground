@@ -1,6 +1,6 @@
 package roomescape.global;
 
-import roomescape.global.exception.ExceptionWithErrorCode;
+import roomescape.global.controller.ExceptionWithErrorCode;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
