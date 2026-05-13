@@ -1,6 +1,7 @@
 package roomescape.reservation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nonnull;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.ReservationId;
 
@@ -18,7 +19,7 @@ public record ReservationResponse(
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 		LocalTime time
 ) {
-	public static ReservationResponse from(Reservation reservation) {
+	public static ReservationResponse from(@Nonnull Reservation reservation) {
 		return new ReservationResponse(
 				reservation.getId(),
 				reservation.getName(),

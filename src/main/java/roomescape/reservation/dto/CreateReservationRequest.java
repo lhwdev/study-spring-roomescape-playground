@@ -1,5 +1,6 @@
 package roomescape.reservation.dto;
 
+import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import roomescape.reservation.domain.Reservation;
@@ -21,7 +22,7 @@ public record CreateReservationRequest(
 		@NotNull
 		LocalTime time
 ) {
-	public Reservation createEntity(ReservationId id) throws ReservationException.InputFormat {
+	public Reservation createEntity(@Nonnull ReservationId id) throws ReservationException.InputFormat {
 		return new Reservation(id, name, LocalDateTime.of(date, time));
 	}
 }
