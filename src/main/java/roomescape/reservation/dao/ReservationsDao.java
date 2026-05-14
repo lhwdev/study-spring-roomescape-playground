@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import roomescape.global.domain.DomainException;
 import roomescape.reservation.domain.CreateReservationInfo;
 import roomescape.reservation.domain.Reservation;
@@ -66,11 +67,12 @@ public class ReservationsDao {
         }
     }
 
+    @Transactional
     public @Nonnull Reservation create(@Nonnull CreateReservationInfo info) {
         ReservationId id = insert(info);
         Reservation reservation = get(id);
         if (reservation == null) {
-            throw new DomainException.UnknownError("failed");
+            throw new DomainException.UnknownError("예약을 생성했지만, 해당 예약을 찾을 수 없습니다.");
         }
         return reservation;
     }
@@ -88,7 +90,7 @@ public class ReservationsDao {
                 return statement;
             }, keyHolder);
 
-            if (affectedRows == 0) {
+            if (affectedRows != 1) {
                 throw new DomainException.UnknownError("reservation 행을 삽입할 수 없습니다.");
             }
         } catch (DataAccessException e) {

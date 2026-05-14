@@ -104,7 +104,7 @@ public class ReservationScenarioTest {
 				.body("size()", is(0));
 		
 		assertThat(getReservationsCount())
-				.isEqualTo(previousCount);
+				.isEqualTo(previousCount - 1);
 	}
 	
 	@Test
