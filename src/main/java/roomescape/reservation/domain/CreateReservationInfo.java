@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public record CreateReservationInfo(@Nonnull String name, @Nonnull LocalDateTime time) {
-    public static final int NAME_MAX_LENGTH = 6;
+    public static final int NAME_MAX_LENGTH = 20;
 
     public CreateReservationInfo {
         Objects.requireNonNull(name, "name이 null일 수 없습니다.");
@@ -25,5 +25,4 @@ public record CreateReservationInfo(@Nonnull String name, @Nonnull LocalDateTime
             throw new ReservationException.InputFormat.IllegalName();
         }
     }
-
 }

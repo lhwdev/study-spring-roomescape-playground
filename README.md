@@ -96,7 +96,7 @@ Content-Type: application/json
 
 > `(body: CreateReservationBody) -> ReservationDto`
 
-- 이름은 한글, 영어 등의 문자만 가능합니다. (Unicode Letter Category)
+- 이름은 최대 20자만 가능하고, 한글, 영어 등의 문자만 가능합니다. (Unicode Letter Category)
 - 기존 예약과 중복되는 시간에 예약할 수 없습니다.
 
 **정상 요청**
